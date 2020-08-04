@@ -26,7 +26,11 @@ func NewLogger(jsonOut bool) *Logger {
 func (l *Logger) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	start := time.Now()
 
-	r.ParseForm()
+	err := r.ParseForm()
+	if err != nil {
+		l.Println("ParseForm error", err)
+	}
+
 	param := r.Form.Encode()
 	next(rw, r)
 
